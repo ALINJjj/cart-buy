@@ -1,0 +1,11 @@
+.ad-text {
+    font-family: "Montserrat";
+    font-weight: bold;
+    line-height: 1.5;
+    font-size: 2rem !important;
+    color: #fff;
+}
+
+a{
+    text-decoration: none;
+}

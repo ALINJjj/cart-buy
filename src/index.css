@@ -19,3 +19,11 @@ code {
   color: #fff !important;
   font-size: 1.2rem;
 }
+
+.carousel-item {
+  padding: 5% 7%;
+}
+
+.carousel-item{
+  padding: 7% 15%;
+}
