@@ -1,64 +1,190 @@
 import classes from "./Order.module.css";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import Input from "../Component/Input";
 import Type from "../Component/Type";
 import SmallTable from "../Component/SmallTable";
 import CheckBox from "../Component/CheckBox";
-import {useForm} from "react-hook-form"
 const Order = () => {
-  const firstNameRef = useRef();
-  const codeRef = useRef();
-  const lastNameRef = useRef();
-  const desNumberRef = useRef();
-  const messageRef = useRef();
-  const simTypeRef = useRef();   
-  const checkRef = useRef();
-  const formRef = useRef();
-  const {reset}  = useForm()
+  const [data, setData] = useState({
+    firstname: "",
+    lastName: "",
+    desNumber: "",
+    simType: "",
+    message: "",
+    code: "",
+  });
+  const [errors, setErrors] = useState({
+    fname: false,
+    lName: false,
+    dNumber: false,
+    sim: false,
+    code: false,
+  });
+  const [showTable, setShowTable] = useState(false);
 
+  
+  
+
+  const choisehandler = (event) => {
+    const sim = event.target.value;
+    setData({
+      ...data,
+      simType: sim,
+    });
+  };
+
+  const simTexthandler = (event) => {
+    const sim = event.target.value;
+    setData({
+      ...data,
+      simType: sim,
+    });
+  };
+  const StringsTest = (word) => {
+    return word.trim().length >= 3;
+  };
+
+  const phoneTest = (number) => {
+    return number.trim().length === 8;
+  };
+
+  const simTest = (sim) => {
+    return (
+      sim.trim().toLowerCase() === "mtc" || sim.trim().toLowerCase() === "alfa"
+    );
+  };
+
+  const codeTest = (code) => {
+    return code.trim().length === 3;
+  };
+
+  const nameHandler = (event) => {
+    setErrors({
+      ...errors,
+      fname: false,
+    });
+    const name = event.target.value;
+    setData({
+      ...data,
+      firstname: name,
+    });
+  };
+
+  const lnameHandler = (event) => {
+    setErrors({
+      ...errors,
+      lName: false,
+    });
+    const lastname = event.target.value;
+    setData({
+      ...data,
+      lastName: lastname,
+    });
+  };
+
+  const desNumberHandler = (event) => {
+    setErrors({
+      ...errors,
+      dNumber: false,
+    });
+    const number = event.target.value;
+    setData({
+      ...data,
+      desNumber: number,
+    });
+  };
+
+  const codeHandler = (event) => {
+    setErrors({
+      ...errors,
+      code: false,
+    });
+    const code = event.target.value;
+    setData({
+      ...data,
+      code: code,
+    });
+    if (code.trim().length === 3) {
+      setShowTable(true);
+    }
+  };
+
+  const messageHandler = (event) => {
+    const message = event.target.value;
+    setData({
+      ...data,
+      message: message,
+    });
+  };
   const submithandler = (event) => {
     event.preventDefault();
-    const firstname = firstNameRef.current.value;
-    const lastname = lastNameRef.current.value;
-    const code = codeRef.current.value;
-    const simType = simTypeRef.current.value;
-    const message = messageRef.current.value;
-    const desNumber = desNumberRef.current.value;
-    desNumberRef.current.value = ""
-    console.log(firstname);
-    console.log(lastname);
-    console.log(code);
-    console.log(simType);
-    console.log(message);
-    console.log(desNumber);
-    const myform = document.getElementById("my-form")
-    console.log(myform)
+    const dataErrors = 
+    {
+      fname: !StringsTest(data.firstname),
+      lName: !StringsTest(data.lastName),
+      dNumber: !phoneTest(data.desNumber),
+      sim: !simTest(data.simType),
+      code: !codeTest(data.code),
+    }
+    setErrors(dataErrors);
+    const noError = !dataErrors.fname && !dataErrors.lName && !dataErrors.dNumber && !dataErrors.sim && !dataErrors.code;
+
+    if(noError){
+      console.log("succs");
+    }
+    else{
+      return
+    }
   };
   return (
-    <div className={classes.form} id="my-form" ref={formRef}>
+    <div className={classes.form} id="my-form">
       <form onSubmit={submithandler}>
         <div className="form-row">
           <Input
+            onType={nameHandler}
             title="First Name:"
             placeholder="Enter your first name"
-            theref={firstNameRef}
+            isError={errors.fname}
+            errorMessage={errors.fname ? "Enter a valid Name" : ""}
           />
-          <Input title="last Name:" placeholder="Enter your last name" theref={lastNameRef}/>
-       
           <Input
+            onType={lnameHandler}
+            title="last Name:"
+            placeholder="Enter your last name"
+            isError={errors.lName}
+            errorMessage={errors.lName ? "Enter a valid Name" : ""}
+          />
+
+          <Input
+            onType={desNumberHandler}
             title="Destination Number:"
             placeholder="your phone number"
             type="tel"
-            theref={desNumberRef}
+            isError={errors.dNumber}
+            errorMessage={errors.dNumber ? "Not Lebanese number" : ""}
           />
-          <Type theref={simTypeRef}/>
-          <Input title="Message:" placeholder="enter your messge to me" theref={messageRef}/>
+          <Type
+            onChoise={choisehandler}
+            onType={simTexthandler}
+            value={data.simType}
+          />
+          <Input
+            onType={messageHandler}
+            title="Message:"
+            placeholder="enter your messge to me"
+          />
 
-         <Input title="Code:" classes="col-2 mb-3" theref={codeRef}/>
-          
-          <SmallTable marke = "touch" price="5"/>
+          <Input
+            onType={codeHandler}
+            title="Code:"
+            classes="col-2 mb-3"
+            isError={errors.code}
+            errorMessage={errors.code ? "Invalid" : ""}
+          />
+
+          {showTable && <SmallTable marke="touch" price="5" />}
         </div>
-        <CheckBox text ="Agree to terms and conditions" theref={checkRef}/>
+        <CheckBox text="A you sure ? " />
         <div className="d-flex justify-content-center">
           <button type="submit" className="btn btn-outline-light btn-lg mt-3">
             Order

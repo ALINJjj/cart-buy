@@ -1,0 +1,9 @@
+.error label{
+    color: red !important;
+    font-family: 'McLaren', cursive;
+}
+
+.error input{
+    border: 3px solid red;
+   
+}
