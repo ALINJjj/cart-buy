@@ -1,7 +1,7 @@
 import classes from "./Header.module.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons'
-
+import {Link} from 'react-router-dom'
 
 const Header = () => {
   return (
@@ -37,12 +37,13 @@ const Header = () => {
             </li>
           </ul>
         </div>
-        <a className="navbar-brand" href="#">
-          {" "}
+        <Link to='/order'>
+    
           <button type="button" className="btn btn-lg btn-outline-light">
-          <FontAwesomeIcon icon={faCartShopping}></FontAwesomeIcon> Shop
+          <FontAwesomeIcon icon={faCartShopping}></FontAwesomeIcon> Order
           </button>
-        </a>
+          </Link>
+      
       </div>
     </nav>
   );

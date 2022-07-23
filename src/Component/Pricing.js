@@ -1,6 +1,6 @@
 const Pricing = () => {
   return (
-    <table class="table table-sm table-dark">
+    <table className="table table-sm table-dark">
       <thead>
         <tr>
           <th scope="col">#</th>

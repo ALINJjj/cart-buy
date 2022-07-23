@@ -36,17 +36,17 @@ const Home = () => {
             below
           </p>
           <a href="mailto:alinjcs@gmail.com">
-            <button type="button" class="btn btn-outline-light mb-4">
+            <button type="button" className="btn btn-outline-light mb-4">
               Contact
             </button>
           </a>
         </section>
         <footer id="footer">
       
-          <a href="#"><i class="social-icons fab fa-facebook-f"></i></a>
-          <a href="#"><i class="social-icons fa-brands fa-twitter"></i></a>
-          <a href="#"><i class="social-icons fa-brands fa-instagram"></i></a>
-          <a href="#"><i class="social-icons fa-solid fa-envelope"></i></a>
+          <a href="#"><i className="social-icons fab fa-facebook-f"></i></a>
+          <a href="#"><i className="social-icons fa-brands fa-twitter"></i></a>
+          <a href="#"><i className="social-icons fa-brands fa-instagram"></i></a>
+          <a href="#"><i className="social-icons fa-solid fa-envelope"></i></a>
           <p>© Copyright 2022 Monzer</p>
         </footer>
       </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import Home from "./Screen/Home"
-import Order from './Screen/Order';
+import Home from "./Screens/Home"
+import Order from './Screens/Order';
 
 const App = () => (
   <Router>
