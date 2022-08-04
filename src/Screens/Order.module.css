@@ -4,6 +4,10 @@
    
 }
 
+.form a {
+    color: #fff;
+}
+
 .form label{
     color: aliceblue;
     font-size: large;

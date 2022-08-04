@@ -7,7 +7,8 @@ const Input = ({
   classes = "col-md-6 mb-3",
   isError,
   onType,
-  errorMessage
+  errorMessage,
+  val
 }) => {
  
 
@@ -18,6 +19,7 @@ const Input = ({
       </label>
 
       <input
+        value={val}
         onChange={(event) => onType(event)}
         type={type}
         className="form-control"

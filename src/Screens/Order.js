@@ -1,10 +1,18 @@
 import classes from "./Order.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Input from "../Component/Input";
 import Type from "../Component/Type";
 import SmallTable from "../Component/SmallTable";
 import CheckBox from "../Component/CheckBox";
+import { Link,useNavigate } from "react-router-dom";
+import CheckingBar from "../Component/CheckingBar";
+import usehttp from "../hooks/use-http";
+import { useSelector } from "react-redux";
+
 const Order = () => {
+  const navigate = useNavigate();
+  const smallData = useSelector((state) => state.data);
+  let noError;
   const [data, setData] = useState({
     firstname: "",
     lastName: "",
@@ -21,9 +29,11 @@ const Order = () => {
     code: false,
   });
   const [showTable, setShowTable] = useState(false);
-
-  
-  
+  const [tableData, setTableDta] = useState({
+    price: null,
+    service: null,
+  });
+  const { isLoading, errorState, sendRequest } = usehttp();
 
   const choisehandler = (event) => {
     const sim = event.target.value;
@@ -104,8 +114,42 @@ const Order = () => {
       ...data,
       code: code,
     });
+    const enterdCode = code.trim().toString();
+    let specificData;
     if (code.trim().length === 3) {
+      const firstChar = enterdCode.charAt(0);
+
+      if (firstChar.toLowerCase() === "a") {
+        specificData = smallData.ALFA;
+      } else if (firstChar.toLowerCase() === "m") {
+        specificData = smallData.MTC;
+      } else {
+        setErrors({
+          ...errors,
+          code: true,
+        });
+        return;
+      }
+      const finalData = specificData.find((item) => item.code === enterdCode);
+      if (finalData) {
+        setTableDta({
+          service: finalData.servise,
+          price: finalData.price,
+        });
+      } else {
+        setErrors({
+          ...errors,
+          code: true,
+        });
+        return;
+      }
       setShowTable(true);
+    } else {
+      setShowTable(false);
+      setErrors({
+        ...errors,
+        code: false,
+      });
     }
   };
 
@@ -116,31 +160,53 @@ const Order = () => {
       message: message,
     });
   };
-  const submithandler = (event) => {
+  const submithandler = async (event) => {
     event.preventDefault();
-    const dataErrors = 
-    {
+    const dataErrors = {
       fname: !StringsTest(data.firstname),
       lName: !StringsTest(data.lastName),
       dNumber: !phoneTest(data.desNumber),
       sim: !simTest(data.simType),
       code: !codeTest(data.code),
-    }
+    };
     setErrors(dataErrors);
-    const noError = !dataErrors.fname && !dataErrors.lName && !dataErrors.dNumber && !dataErrors.sim && !dataErrors.code;
+    noError =
+      !dataErrors.fname &&
+      !dataErrors.lName &&
+      !dataErrors.dNumber &&
+      !dataErrors.sim &&
+      !dataErrors.code;
 
-    if(noError){
-      console.log("succs");
+    if (noError) {
+      const requestConfig = {
+        url: "https://cart-3cc76-default-rtdb.europe-west1.firebasedatabase.app/order.json",
+        data: data,
+        method: "POST",
+      };
+
+      sendRequest(requestConfig, (data) => console.log("data"));
+      setTimeout(()=>{
+        navigate('/');
+      },1000);
+    } else {
+      return;
     }
-    else{
-      return
-    }
+    setData({
+      firstname: "",
+      lastName: "",
+      desNumber: "",
+      simType: "",
+      message: "",
+      code: "",
+    });
   };
   return (
     <div className={classes.form} id="my-form">
+      {isLoading && <CheckingBar />}
       <form onSubmit={submithandler}>
         <div className="form-row">
           <Input
+            val={data.firstname}
             onType={nameHandler}
             title="First Name:"
             placeholder="Enter your first name"
@@ -148,6 +214,7 @@ const Order = () => {
             errorMessage={errors.fname ? "Enter a valid Name" : ""}
           />
           <Input
+            val={data.lastName}
             onType={lnameHandler}
             title="last Name:"
             placeholder="Enter your last name"
@@ -156,6 +223,7 @@ const Order = () => {
           />
 
           <Input
+            val={data.desNumber}
             onType={desNumberHandler}
             title="Destination Number:"
             placeholder="your phone number"
@@ -167,14 +235,18 @@ const Order = () => {
             onChoise={choisehandler}
             onType={simTexthandler}
             value={data.simType}
+            isError={errors.sim}
+            errorMessage="ALFA or MTC"
           />
           <Input
+            val={data.message}
             onType={messageHandler}
             title="Message:"
             placeholder="enter your messge to me"
           />
 
           <Input
+            val={data.code}
             onType={codeHandler}
             title="Code:"
             classes="col-2 mb-3"
@@ -182,7 +254,9 @@ const Order = () => {
             errorMessage={errors.code ? "Invalid" : ""}
           />
 
-          {showTable && <SmallTable marke="touch" price="5" />}
+          {showTable && (
+            <SmallTable marke={tableData.service} price={tableData.price} />
+          )}
         </div>
         <CheckBox text="A you sure ? " />
         <div className="d-flex justify-content-center">

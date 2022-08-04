@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 
   box-sizing: border-box;
   padding: 0;
@@ -15,7 +15,7 @@ hr {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
@@ -28,7 +28,7 @@ code {
   padding: 5% 7%;
 }
 
-.carousel-item{
+.carousel-item {
   padding: 7% 10%;
 }
 .table {
@@ -36,7 +36,6 @@ code {
 }
 #pricing {
   padding: 10px 20px;
- 
 }
 
 #pricing h1 {
@@ -44,19 +43,18 @@ code {
   color: #fff;
 }
 
-h3{
+h3 {
   color: #fff;
   font-weight: 500;
 }
 
-h3 span{
-  color:aquamarine;
+h3 span {
+  color: aquamarine;
 }
 
 .home {
   text-align: center;
   background-color: #ff4c68;
-
 }
 
 #footer {
@@ -70,20 +68,24 @@ h3 span{
   color: inherit;
 }
 
-i{
+i {
   margin: 10px 10px;
 }
 
 i:hover,
 i:active {
-  color:#ff4c68;
+  color: #ff4c68;
 }
 
 #contact p {
   font-size: 1.4rem;
   color: #fff;
-
 }
 
-
-
+.home-error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  font-size: 2rem;
+}
